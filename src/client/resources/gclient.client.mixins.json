@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "io.github.gegentan.gclient.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ChatScreenMixin",
+		"CameraMixin",
+		"PlayerMixin",
+		"GameOptionsMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

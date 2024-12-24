@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "gclient",
+	"version": "${version}",
+	"name": "GClient",
+	"description": "Some ImGui testing.",
+	"authors": [
+		"gegentan"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/gclient/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.gegentan.gclient.GClient"
+		],
+		"client": [
+			"io.github.gegentan.gclient.GClientClient"
+		]
+	},
+	"mixins": [
+		"gclient.mixins.json",
+		{
+			"config": "gclient.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
