@@ -40,6 +40,12 @@ public class ImGuiInitializer {
                     if (random.nextInt(30) == 1) {
                         client.player.jump();
                     }
+                    float addYaw = random.nextFloat(20)-10f;
+                    float addPitch = random.nextFloat(20)-10f;
+                    client.player.setYaw(client.player.getYaw()+addYaw);
+                    client.player.setPitch(client.player.getPitch()+addPitch);
+                    if (client.player.getPitch() > 90) client.player.setPitch(80);
+                    if (client.player.getPitch() < -90) client.player.setPitch(-80);
                 }
             }
             if (GClientClient.showImGui) {
