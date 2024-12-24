@@ -1,6 +1,7 @@
 package io.github.gegentan.gclient.mixin.client;
 
 import io.github.gegentan.gclient.ImGuiInitializer;
+import io.github.gegentan.gclient.ImGuiRenderer;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -15,7 +16,7 @@ public class PlayerMixin {
 
     @Inject(method = "Lnet/minecraft/client/render/entity/PlayerEntityRenderer;render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
     private void InjectRender(AbstractClientPlayerEntity abstractClientPlayerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-        if (ImGuiInitializer.spectatePlayerOn && ImGuiInitializer.spectatePlayerName.get().equals(abstractClientPlayerEntity.getName().getString())) {
+        if (ImGuiRenderer.spectatePlayerOn && ImGuiRenderer.spectatePlayerName.get().equals(abstractClientPlayerEntity.getName().getString())) {
             ci.cancel();
         }
     }
