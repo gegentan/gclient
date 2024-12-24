@@ -129,7 +129,7 @@ public class ImGuiRenderer {
         }
 
         if (antiAfkToolActive.get()) {
-            ImGui.begin("Anti AFK", sendMessageToolActive);
+            ImGui.begin("Anti AFK", antiAfkToolActive);
             if (ImGui.checkbox("Active", antiAfkOn)) {
                 antiAfkOn = !antiAfkOn;
             }
