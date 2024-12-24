@@ -10,8 +10,6 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.text.Text;
 
-import java.util.List;
-
 public class ImGuiRenderer {
 
     private static final ImBoolean sendMessageToolActive = new ImBoolean(false);
