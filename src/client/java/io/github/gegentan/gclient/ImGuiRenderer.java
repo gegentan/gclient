@@ -28,6 +28,8 @@ public class ImGuiRenderer {
 
     public static final ImBoolean antiAfkToolActive = new ImBoolean(false);
     public static boolean antiAfkOn = false;
+    public static boolean antiAfkJump = true;
+    public static boolean antiAfkShakeCam = true;
 
     public static ImDrawData renderImGui(MinecraftClient client) {
         ImGui.newFrame();
@@ -132,6 +134,12 @@ public class ImGuiRenderer {
             ImGui.begin("Anti AFK", antiAfkToolActive);
             if (ImGui.checkbox("Active", antiAfkOn)) {
                 antiAfkOn = !antiAfkOn;
+            }
+            if (ImGui.checkbox("Jump", antiAfkJump)) {
+                antiAfkJump = !antiAfkJump;
+            }
+            if (ImGui.checkbox("Shake Camera", antiAfkShakeCam)) {
+                antiAfkShakeCam = !antiAfkShakeCam;
             }
             ImGui.end();
         }
