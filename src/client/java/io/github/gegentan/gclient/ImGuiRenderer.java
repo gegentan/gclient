@@ -2,11 +2,10 @@ package io.github.gegentan.gclient;
 
 import imgui.ImDrawData;
 import imgui.ImGui;
-import imgui.flag.ImGuiTableFlags;
 import imgui.type.ImBoolean;
 import imgui.type.ImString;
+import io.github.gegentan.gclient.tools.PlayerCoords;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.text.Text;
 
@@ -15,19 +14,16 @@ public class ImGuiRenderer {
     private static final ImBoolean sendMessageToolActive = new ImBoolean(false);
     private static ImString sendMessageText = new ImString();
 
-    private static final ImBoolean playerCordsToolActive = new ImBoolean(false);
-    private static final ImString playerCordsFilter = new ImString();
-
-    private static final ImBoolean spectatePlayerToolActive = new ImBoolean(false);
+    private static final ImBoolean spectatePlayerToolOpen = new ImBoolean(false);
     public static ImString spectatePlayerName = new ImString();
-    public static boolean spectatePlayerOn = false;
+    public static boolean spectatePlayerActive = false;
 
-    private static final ImBoolean screenShakeToolActive = new ImBoolean(false);
-    public static boolean screenShakeOn = false;
+    private static final ImBoolean screenShakeToolOpen = new ImBoolean(false);
+    public static boolean screenShakeActive = false;
     public static float[] screenShakeIntensity = {0.1f};
 
-    public static final ImBoolean antiAfkToolActive = new ImBoolean(false);
-    public static boolean antiAfkOn = false;
+    public static final ImBoolean antiAfkToolOpen = new ImBoolean(false);
+    public static boolean antiAfkActive = false;
     public static boolean antiAfkJump = true;
     public static boolean antiAfkShakeCam = true;
 
@@ -40,16 +36,16 @@ public class ImGuiRenderer {
                     sendMessageToolActive.set(true);
                 }
                 if (ImGui.menuItem("Player Cords")) {
-                    playerCordsToolActive.set(true);
+                    PlayerCoords.openTool();
                 }
                 if (ImGui.menuItem("Spectate Player")) {
-                    spectatePlayerToolActive.set(true);
+                    spectatePlayerToolOpen.set(true);
                 }
                 if (ImGui.menuItem("Screen Shake")) {
-                    screenShakeToolActive.set(true);
+                    screenShakeToolOpen.set(true);
                 }
                 if (ImGui.menuItem("Anti AFK")) {
-                    antiAfkToolActive.set(true);
+                    antiAfkToolOpen.set(true);
                 }
                 ImGui.endMenu();
             }
@@ -68,52 +64,15 @@ public class ImGuiRenderer {
             ImGui.end();
         }
 
-        if (playerCordsToolActive.get()) {
-            ImGui.begin("Player Cords", playerCordsToolActive);
-
-            ImGui.inputText("Filter", playerCordsFilter);
-
-            int columns = 4;
-
-            if (ImGui.beginTable("Player cords", columns, ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg)) {
-                ImGui.tableSetupColumn("Name");
-                ImGui.tableSetupColumn("X");
-                ImGui.tableSetupColumn("Y");
-                ImGui.tableSetupColumn("Z");
-
-                ImGui.tableHeadersRow();
-
-                for (AbstractClientPlayerEntity player : ImGuiInitializer.players) {
-                    String name = player.getName().getString();
-
-                    if ((name.contains(playerCordsFilter.get())) || (playerCordsFilter.get().isEmpty())) {
-                        float x = Math.round(player.getX()*1000f)/1000f;
-                        float y = Math.round(player.getY()*100000f)/100000f;
-                        float z = Math.round(player.getZ()*1000f)/1000f;
-
-                        ImGui.tableNextRow();
-                        ImGui.tableSetColumnIndex(0);
-                        ImGui.text(name);
-                        ImGui.tableSetColumnIndex(1);
-                        ImGui.text(String.valueOf(x));
-                        ImGui.tableSetColumnIndex(2);
-                        ImGui.text(String.valueOf(y));
-                        ImGui.tableSetColumnIndex(3);
-                        ImGui.text(String.valueOf(z));
-                    }
-                }
-
-                ImGui.endTable();
-            }
-
-            ImGui.end();
+        if (PlayerCoords.isToolOpen().get()) {
+            PlayerCoords.render(client);
         }
 
-        if (spectatePlayerToolActive.get()) {
-            ImGui.begin("Spectate Player", spectatePlayerToolActive);
-            if (ImGui.checkbox("Active", spectatePlayerOn)) {
-                spectatePlayerOn = !spectatePlayerOn;
-                if (!spectatePlayerOn) {
+        if (spectatePlayerToolOpen.get()) {
+            ImGui.begin("Spectate Player", spectatePlayerToolOpen);
+            if (ImGui.checkbox("Active", spectatePlayerActive)) {
+                spectatePlayerActive = !spectatePlayerActive;
+                if (!spectatePlayerActive) {
                     client.options.setPerspective(Perspective.FIRST_PERSON);
                 }
             }
@@ -121,19 +80,19 @@ public class ImGuiRenderer {
             ImGui.end();
         }
 
-        if (screenShakeToolActive.get()) {
-            ImGui.begin("Screen Shake", screenShakeToolActive);
-            if (ImGui.checkbox("Active", screenShakeOn)) {
-                screenShakeOn = !screenShakeOn;
+        if (screenShakeToolOpen.get()) {
+            ImGui.begin("Screen Shake", screenShakeToolOpen);
+            if (ImGui.checkbox("Active", screenShakeActive)) {
+                screenShakeActive = !screenShakeActive;
             }
             ImGui.sliderFloat("Intensity", screenShakeIntensity, 0.001f, 1f);
             ImGui.end();
         }
 
-        if (antiAfkToolActive.get()) {
-            ImGui.begin("Anti AFK", antiAfkToolActive);
-            if (ImGui.checkbox("Active", antiAfkOn)) {
-                antiAfkOn = !antiAfkOn;
+        if (antiAfkToolOpen.get()) {
+            ImGui.begin("Anti AFK", antiAfkToolOpen);
+            if (ImGui.checkbox("Active", antiAfkActive)) {
+                antiAfkActive = !antiAfkActive;
             }
             if (ImGui.checkbox("Jump", antiAfkJump)) {
                 antiAfkJump = !antiAfkJump;
