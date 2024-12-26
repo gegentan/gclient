@@ -1,6 +1,5 @@
 package io.github.gegentan.gclient.mixin.client;
 
-import io.github.gegentan.gclient.ImGuiInitializer;
 import io.github.gegentan.gclient.ImGuiRenderer;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
